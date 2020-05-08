@@ -24,5 +24,5 @@ let hour = 0;
 // let a = $("#inp1");
 // console.log(grabValue("#inp1"));
 $("#btn1").click(element => hour = new grabValue("#inp1").value);
-// $("#btn1").click(a = $("#inp1").value = console.log(a));
+// $("#btn1").click(a = $("#inp1").value = console.log(a));zxcz
 // $("#btn1").click(element => hour = $("#int1").value);
