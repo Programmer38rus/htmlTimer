@@ -18,3 +18,8 @@ body {
 #start, #stop  {
     width: 150px;
 }
+
+#pause {
+    width: 150px;
+    display: none;
+}

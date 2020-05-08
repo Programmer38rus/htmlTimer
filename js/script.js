@@ -19,13 +19,13 @@ jQuery.prototype.addReport = function (text) {
 
 function grabValue(id, timestamp) {
     let element = document.querySelector(id).value;
-
-    if (element <= 59 && element >= 0) {
+    if (element <= 60 && element >= 0) {
         $("#report").addReport("");
-        element *= timestamp
+        element *= timestamp;
         return element;
     } else {
-        $("#report").addReport("Вводимое вами значение должно содержать цыфры от 0 до 59");
+        $("#report").addReport("Вводимое вами значение должно содержать цыфры от 0 до 60");
+        return element-element
     }
 }
 
@@ -37,48 +37,69 @@ const checkLength = (value, interval) => {
 
 function timestampConverter(sum){
 
-    let hours = Math.floor((sum / (1000 * 60 * 60)) % 24);
-    let minutes = Math.floor((sum / (1000 * 60)) % 60);
-    let seconds = Math.floor((sum / 1000 ) % 60);
+    let hours = String(Math.floor((sum / (1000 * 60 * 60)) % 60));
+    let minutes = String(Math.floor((sum / (1000 * 60)) % 60));
+    let seconds = String(Math.floor((sum / 1000 ) % 60));
+
 
     dictionary = {
         "hours": hours,
         "minutes": minutes,
         "seconds": seconds,
+
     };
+
+    clock.innerText = checkLength(dictionary.hours, 2) + ":" + checkLength(dictionary.minutes, 2) + ":" + checkLength(dictionary.seconds, 2);
 
 
     return dictionary
 
 };
 
-// jQuery.prototype.add
+
+function timer() {
+    if (countDown > 0) {
+        countDown -= 1000;
+    } else {
+        alert("Спасибо за внимание :)");
+        clearInterval(time);
+        hideAndShow("#pause", "#start")
+        countDown = 0;
+    }
+
+    timestampConverter(countDown);
+
+};
+
+function hideAndShow (hide, show) {
+    let hider = document.querySelector(hide);
+    let showr = document.querySelector(show);
+    hider.style.display = "none";
+    showr.style.display = "inline-block";
+
+};
 
 let $ = (e) => new jQuery(e);
 
 let dictionary = {};
 let countDown = 0;
 
-// let hour, minute, second = 0;
-// let gg = {};
-// let count = 0;
-
-$("#btn1").click(element => countDown += grabValue("#inp1", 3600000), timestampConverter(countDown));
-$("#btn2").click(element => countDown += grabValue("#inp2", 60000));
-$("#btn3").click(element => countDown += grabValue("#inp3", 1000));
-$("#start").click(element => console.log(timestampConverter(countDown)));
-$("#stop").click(element => countDown = 0);
 
 
+$("#btn1").click(element => countDown += grabValue("#inp1", 3600000)).click(element => timestampConverter(countDown));
+$("#btn2").click(element => countDown += grabValue("#inp2", 60000)).click(element => timestampConverter(countDown));
+$("#btn3").click(element => countDown += grabValue("#inp3", 1000)).click(element => timestampConverter(countDown));
 
-function timer() {
+$("#btn1min").click(element => countDown -= grabValue("#inp1", 3600000)).click(element => timestampConverter(countDown));
+$("#btn2min").click(element => countDown -= grabValue("#inp2", 60000)).click(element => timestampConverter(countDown));
+$("#btn3min").click(element => countDown -= grabValue("#inp3", 1000)).click(element => timestampConverter(countDown));
 
-    clock.innerText = checkLength(dictionary.hours, 2) + ":" + checkLength(dictionary.minutes, 2) + ":" + checkLength(dictionary.seconds, 2);
-    timestampConverter(countDown);
-    countDown -= 1000;
-    const time = window.setInterval(timer, 1000);
 
-};
+$("#start").click(element => time = window.setInterval(timer, 1000)).click(element => hideAndShow("#start", "#pause"));
+$("#stop").click(element => countDown = -1).click(element => timestampConverter(0)).click(element => clearInterval(time)).click(element => hideAndShow("#pause", "#start"));
+$("#pause").click(element => clearInterval(time)).click(element => hideAndShow("#pause", "#start"));
+
+
 
 
 
