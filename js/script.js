@@ -36,34 +36,37 @@ const checkLength = (value, interval) => {
 };
 
 function timestampConverter(sum){
-
-    let hours = String(Math.floor((sum / (1000 * 60 * 60)) % 60));
-    let minutes = String(Math.floor((sum / (1000 * 60)) % 60));
-    let seconds = String(Math.floor((sum / 1000 ) % 60));
-
-
-    dictionary = {
-        "hours": hours,
-        "minutes": minutes,
-        "seconds": seconds,
-
-    };
-
-    clock.innerText = checkLength(dictionary.hours, 2) + ":" + checkLength(dictionary.minutes, 2) + ":" + checkLength(dictionary.seconds, 2);
+    if (countDown >= 0) {
+        let hours = String(Math.floor((sum / (1000 * 60 * 60)) % 60));
+        let minutes = String(Math.floor((sum / (1000 * 60)) % 60));
+        let seconds = String(Math.floor((sum / 1000) % 60));
 
 
-    return dictionary
+        dictionary = {
+            "hours": hours,
+            "minutes": minutes,
+            "seconds": seconds,
+
+        };
+
+        clock.innerText = checkLength(dictionary.hours, 2) + ":" + checkLength(dictionary.minutes, 2) + ":" + checkLength(dictionary.seconds, 2);
+
+
+        return dictionary
+    } else {
+        countDown = 0
+    }
 
 };
 
 
 function timer() {
     if (countDown > 0) {
-        countDown -= 1000;
+        countDown -= 10;
     } else {
         alert("Спасибо за внимание :)");
         clearInterval(time);
-        hideAndShow("#pause", "#start")
+        hideAndShow("#pause", "#start");
         countDown = 0;
     }
 
@@ -73,9 +76,9 @@ function timer() {
 
 function hideAndShow (hide, show) {
     let hider = document.querySelector(hide);
-    let showr = document.querySelector(show);
+    let shower = document.querySelector(show);
     hider.style.display = "none";
-    showr.style.display = "inline-block";
+    shower.style.display = "inline-block";
 
 };
 
@@ -95,8 +98,8 @@ $("#btn2min").click(element => countDown -= grabValue("#inp2", 60000)).click(ele
 $("#btn3min").click(element => countDown -= grabValue("#inp3", 1000)).click(element => timestampConverter(countDown));
 
 
-$("#start").click(element => time = window.setInterval(timer, 1000)).click(element => hideAndShow("#start", "#pause"));
-$("#stop").click(element => countDown = -1).click(element => timestampConverter(0)).click(element => clearInterval(time)).click(element => hideAndShow("#pause", "#start"));
+$("#start").click(element => time = window.setInterval(timer, 10)).click(element => hideAndShow("#start", "#pause"));
+$("#stop").click(element => countDown = 0).click(element => timestampConverter(0)).click(element => clearInterval(time)).click(element => hideAndShow("#pause", "#start"));
 $("#pause").click(element => clearInterval(time)).click(element => hideAndShow("#pause", "#start"));
 
 
