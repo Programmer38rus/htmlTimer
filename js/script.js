@@ -18,6 +18,10 @@ jQuery.prototype.addReport = function (text) {
 };
 
 function grabValue(id, timestamp) {
+    /**
+     * Принимает данные из input полей на странице, в случае ошибок
+     * выводит репорт в DOC
+     * */
     let element = document.querySelector(id).value;
     if (element <= 60 && element >= 0) {
         $("#report").addReport("");
@@ -30,12 +34,23 @@ function grabValue(id, timestamp) {
 }
 
 const checkLength = (value, interval) => {
+    /**
+     * Прежде чем поместить в DOM добавляет 0 в случе если
+     * меньше заданного интервала
+     * */
     if (value.length < interval)
         return 0 + value;
     return value;
 };
 
 function timestampConverter(sum){
+
+    /**
+     * функция конвертирует таймстап в часы, минуты и секунды, после чего
+     * размещает их в словарь, после чего обновляет док clock отображаемый
+     * на странице
+     * */
+
     if (countDown >= 0) {
         let hours = String(Math.floor((sum / (1000 * 60 * 60)) % 60));
         let minutes = String(Math.floor((sum / (1000 * 60)) % 60));
@@ -61,6 +76,12 @@ function timestampConverter(sum){
 
 
 function timer() {
+
+    /**
+     * обновляет таймер через заданные интервал
+     * и останавливает его при достижении countDown = 0
+     * */
+
     if (countDown > 0) {
         countDown -= 10;
     } else {
@@ -75,6 +96,11 @@ function timer() {
 };
 
 function hideAndShow (hide, show) {
+
+    /**
+     * прячет одну кнопку и показывает другую
+     * */
+
     let hider = document.querySelector(hide);
     let shower = document.querySelector(show);
     hider.style.display = "none";
